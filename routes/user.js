@@ -146,7 +146,7 @@ const {regNo} = req.query
     return res.send(`no attendance:${date},${month},${year}`)
    }
    excel(attendance,date,month,year)
-   const file = path.join('public',`attendance ${date}-${month}-${year}.xlsx`)
+   const file = path.join(__dirname,`attendance ${date}-${month}-${year}.xlsx`)
    const fileName = path.basename(file)
    const mimeType = mime.getType(file)
    res.setHeader("Content-Disposition","attachment; filename=" + fileName)

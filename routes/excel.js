@@ -7,7 +7,7 @@ const convertToExcel =(attendance,date,month,year)=>{
     xlsx.utils.book_append_sheet(workBook,workSheet,'totalAttendance')
     xlsx.write(workBook,{bookType:'xlsx',type:"buffer"})
     xlsx.write(workBook,{bookType:'xlsx',type:'binary'})
-    var down =path.join( 'public',`attendance ${date}-${month}-${year}.xlsx` )
+    var down =path.join( __dirname,`attendance ${date}-${month}-${year}.xlsx` )
     xlsx.writeFile(workBook,down)
     
    }
