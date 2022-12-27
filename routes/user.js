@@ -11,7 +11,7 @@ const mime = require('mime')
 
 router.get("/", async (req, res) => {
     try {
-      const users = await User.find();
+      const users = await User.find().select('-attendance');
       res.status(201).send(users)
     } catch (error) {
       console.log("Cannot find users");
