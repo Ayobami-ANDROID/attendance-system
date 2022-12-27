@@ -5,6 +5,8 @@ const User = require('../model/user')
 const xlsx = require('xlsx')
 const { json } = require('express')
 const path = require('path')
+const excel = require("./excel")
+const mime = require('mime')
 
 
 router.get("/", async (req, res) => {
@@ -143,20 +145,15 @@ const {regNo} = req.query
    if(!totalAttendance){
     return res.send(`no attendance:${date},${month},${year}`)
    }
-   const convertToExcel =()=>{
-    const workSheet =xlsx.utils.json_to_sheet(attendance)
-    const workBook = xlsx.utils.book_new()
-
-    xlsx.utils.book_append_sheet(workBook,workSheet,'totalAttendance')
-    xlsx.write(workBook,{bookType:'xlsx',type:"buffer"})
-    xlsx.write(workBook,{bookType:'xlsx',type:'binary'})
-    var down =path.join( 'public',`attendance ${date}-${month}-${year}.xlsx` )
-    xlsx.writeFile(workBook,down)
-    res.download(down)
-   }
+   excel(attendance,date,month,year)
+   const file = path.join('public',`attendance ${date}-${month}-${year}.xlsx`)
+   const fileName = path.basename(file)
+   const mimeType = mime.getType(file)
+   res.setHeader("Content-Disposition","attachment; filename=" + fileName)
+   res.setHeader("Content-Type",mimeType)
+   res.download(file)
    
    
-   convertToExcel()
       
     } catch (error) {
       console.log(error)
