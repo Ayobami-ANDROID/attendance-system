@@ -135,7 +135,7 @@ const {regNo} = req.body
 
   router.get('/getallattendance', async (req,res)=>{
     try {
-      let {month,year,date} = req.body
+      let {month,year,date} = req.query
      year = Number(year)
      date = Number(date)
    const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year}}}).select("-attendance -_id -__v")
