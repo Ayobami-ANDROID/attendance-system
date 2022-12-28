@@ -69,7 +69,7 @@ router.post("/enter", async (req, res) => {
 ];
 const dayNames = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]
   const date = new Date()
-const {regNo} = req.query
+const {regNo} = req.body
  
   
     try {
@@ -135,7 +135,7 @@ const {regNo} = req.query
 
   router.get('/getallattendance', async (req,res)=>{
     try {
-      let {month,year,date} = req.query
+      let {month,year,date} = req.body
      year = Number(year)
      date = Number(date)
    const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year}}}).select("-attendance -_id -__v")
