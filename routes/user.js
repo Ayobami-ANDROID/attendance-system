@@ -133,6 +133,24 @@ const {regNo} = req.body
     res.status(201).json({msg:'user updated',user})
   })
 
+  router.get('/getAttandanceJson',async(req,res)=>{
+    try {
+      let {month,year,date} = req.query
+      year = Number(year)
+      date = Number(date)
+      const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year}}}).select("-attendance -_id -__v")
+      if(!totalAttendance){
+        return res.send(`no attendance:${date},${month},${year}`)
+       }
+       res.status(200).json({totalAttendance})
+      
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+  })
+
   router.get('/getallattendance', async (req,res)=>{
     try {
       let {month,year,date} = req.query
