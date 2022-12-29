@@ -4,6 +4,7 @@ const app = express();
 const connectDB = require('./connectDB/connectDb')
 require('dotenv').config()
 const user = require('./routes/user')
+const admin = require('./routes/admin')
 const helmet = require('helmet')
 const cors = require('cors')
 const xss = require('xss-clean')
@@ -20,15 +21,16 @@ app.use(rateLimiter({
 }))
 
 app.get('/',(req,res) => {
-    res.send('job api')
+    res.send('<a href="/attendance/enter">register</a>')
   })
 
 app.use(express.json())
 
 const port = process.env.PORT || 3000
 
-
 app.use('/attendance',user)
+app.use('/admin',admin)
+
 const start = async () =>{
     await connectDB(process.env.Mongo_Url)
     app.listen(port,()=>{
