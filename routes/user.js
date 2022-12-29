@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const User = require('../model/user')
+const DOB = require('../model/dob')
 const xlsx = require('xlsx')
 const { json } = require('express')
 const path = require('path')
@@ -19,16 +20,28 @@ router.get("/", async (req, res) => {
   });
 
 router.post('/createUser', async(req,res)=>{
-  const {firstname,lastname,regNo,Subunit,Gender,phoneNo,level,hall,roomNO,webmail,department,matricNo}= req.body
+ 
+  
+  const {firstname,lastname,regNo,Subunit,Gender,phoneNo,level,hall,roomNO,webmail,department,matricNo,month,year,date,dobs}= req.body
+
   const use = await User.findOne({regNo:regNo,matricNo:matricNo})
   try {
+    dobs = []
     if(!use){
       
-      if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo){
+      if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ){
      
        return res.status(400).send('all fields are required')
     }else{
+      
+      const data ={
+        month:month,
+        year:year,
+        date:date
+      }
+      dobs.push(data)
       const user = await User.create(req.body)
+      
      return res.status(200).json({user})
     }
     }else{
