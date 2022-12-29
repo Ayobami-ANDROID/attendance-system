@@ -29,7 +29,7 @@ router.post('/createUser', async(req,res)=>{
     
     if(!use){
       
-      if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ){
+      if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ||!month || !year ||!date ){
      
        return res.status(400).send('all fields are required')
     }else{
