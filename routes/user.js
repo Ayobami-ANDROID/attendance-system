@@ -3,13 +3,14 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const User = require('../model/user')
 const xlsx = require('xlsx')
+const auth = require('../middleware/auth')
 const { json } = require('express')
 const path = require('path')
 const excel = require("./excel")
 const mime = require('mime')
 
 
-router.get("/", async (req, res) => {
+router.get("/", auth,async (req, res) => {
     try {
       const users = await User.find().select('-attendance');
       res.status(201).send(users)
@@ -61,7 +62,7 @@ router.post('/createUser', async(req,res)=>{
    
 })
 
-router.delete('/deleteUser/:id', async(req,res)=>{
+router.delete('/deleteUser/:id',auth, async(req,res)=>{
   try {
     const user = await User.findByIdAndDelete({_id:req.params.id})
     if(!user){
@@ -76,7 +77,7 @@ router.delete('/deleteUser/:id', async(req,res)=>{
     
 })
 
-router.post("/enter", async (req, res) => {
+router.post("/enter", auth,async (req, res) => {
   const monthNames = ["january", "february", "march", "april", "may", "june",
   "july", "august", "september", "october", "november", "december"
 ];
@@ -164,7 +165,7 @@ const {regNo} = req.body
 
   })
 
-  router.get('/getallattendance', async (req,res)=>{
+  router.get('/getallattendance', auth,async (req,res)=>{
     try {
       let {month,year,date} = req.query
      year = Number(year)

@@ -9,8 +9,11 @@ router.post('/login',(req,res)=>{
 
     if(username === "admin" && password ==="admin"){
       const token =  jwt.sign({username:username,password:password},process.env.JWT_SECRET,{expiresIn:'30d'})
-        res.json({token:token})
+       return  res.json({token:token})
+    }else{
+        return res.status(400).send("wrong username or password")
     }
+
 })
 
 module.exports = router
