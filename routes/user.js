@@ -25,7 +25,7 @@ router.post('/createUser', async(req,res)=>{
 
   const use = await User.findOne({regNo:regNo,matricNo:matricNo})
   try {
-    dobs = []
+    
     if(!use){
       
       if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ){
