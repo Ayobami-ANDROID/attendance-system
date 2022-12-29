@@ -83,7 +83,7 @@ router.post("/enter", auth,async (req, res) => {
 ];
 const dayNames = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]
   const date = new Date()
-const {regNo} = req.body
+const {regNo,serviceType} = req.body
  
   
     try {
@@ -92,7 +92,8 @@ const {regNo} = req.body
         month:monthNames[date.getMonth()],
         date:date.getDate(),
         day:dayNames[date.getDay()],
-        year: date.getFullYear()
+        year: date.getFullYear(),
+        serviceType:serviceType
     
       };
       const user = await User.findOne({regNo:regNo});
@@ -149,12 +150,12 @@ const {regNo} = req.body
 
   router.get('/getAttandanceJson',async(req,res)=>{
     try {
-      let {month,year,date} = req.query
+      let {month,year,date,serviceType} = req.query
       year = Number(year)
       date = Number(date)
-      const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year}}}).select("-attendance -_id -__v")
+      const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year,serviceType:serviceType}}}).select("-attendance -_id -__v")
       if(!totalAttendance){
-        return res.send(`no attendance:${date},${month},${year}`)
+        return res.send(`no attendance for ${serviceType} (${date},${month},${year})`)
        }
        res.status(200).json({totalAttendance})
       
@@ -167,17 +168,17 @@ const {regNo} = req.body
 
   router.get('/getallattendance', auth,async (req,res)=>{
     try {
-      let {month,year,date} = req.query
+      let {month,year,date,serviceType} = req.query
      year = Number(year)
      date = Number(date)
-   const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year}}}).select("-attendance -_id -__v")
+   const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year,serviceType:serviceType}}}).select("-attendance -_id -__v")
    var attendance = JSON.stringify(totalAttendance)
    attendance = JSON.parse(attendance)
    console.log(attendance)
    if(!totalAttendance){
     return res.send(`no attendance:${date},${month},${year}`)
    }
-   excel(attendance,date,month,year)
+   excel(attendance,date,month,year,serviceType)
    const file = path.join(__dirname,`attendance ${date}-${month}-${year}.xlsx`)
    const fileName = path.basename(file)
    const mimeType = mime.getType(file)
