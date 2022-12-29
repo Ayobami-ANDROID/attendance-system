@@ -4,7 +4,7 @@ require("dotenv").config()
 const auth = async (req,res,next) =>{
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer')) {
-        res.status(400).send("not authorized to route")
+       return res.status(400).send("not authorized to route")
     }
     const token = authHeader.split(' ')[1]
     try {
