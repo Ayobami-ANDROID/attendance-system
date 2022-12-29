@@ -53,18 +53,10 @@ const userSchema = new mongoose.Schema({
         required:[true,'subunit is required'],
         enum:['follow-up','media','welfare']
     },
-    dobs:[{
-        month:{
-            type:String
-        },
-        year:{
-            type:Number
-        },
-        date:{
-            type:Number
-        }
-    }
-    ],
+    dob:{
+        type:String,
+        required:[true,'date of birth is required']
+    },
 
     attendance:[
         {

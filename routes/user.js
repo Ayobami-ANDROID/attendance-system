@@ -22,27 +22,20 @@ router.get("/", auth,async (req, res) => {
 router.post('/createUser', async(req,res)=>{
  
   
-  const {firstname,lastname,regNo,Subunit,Gender,phoneNo,level,hall,roomNO,webmail,department,matricNo,month,year,date,}= req.body
+  const {firstname,lastname,regNo,Subunit,Gender,phoneNo,level,hall,roomNO,webmail,department,matricNo,dob}= req.body
 
   const use = await User.findOne({regNo:regNo,matricNo:matricNo})
   try {
     
     if(!use){
       
-      if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ||!month || !year ||!date ){
+      if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ||!dob ){
      
        return res.status(400).send('all fields are required')
     }else{
       
-      const data ={
-        month:month,
-        year:year,
-        date:date
-      }
      
       const user = await User.create(req.body)
-      user.dobs.push(data)
-      await user.save()
      return res.status(200).json({user})
     }
     }else{
