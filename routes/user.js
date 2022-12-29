@@ -148,7 +148,7 @@ const {regNo,serviceType} = req.body
     res.status(201).json({msg:'user updated',user})
   })
 
-  router.get('/getAttandanceJson',async(req,res)=>{
+  router.get('/getAttandanceJson',auth,async(req,res)=>{
     try {
       let {month,year,date,serviceType} = req.query
       year = Number(year)
