@@ -9,7 +9,7 @@ const path = require('path')
 const excel = require("./excel")
 const mime = require('mime')
 
-
+//The route to get all the user in the datadase
 router.get("/", auth,async (req, res) => {
     try {
       const users = await User.find().select('-attendance');
@@ -19,16 +19,19 @@ router.get("/", auth,async (req, res) => {
     }
   });
 
+ //This is the route to create a user 
 router.post('/createUser', async(req,res)=>{
  
   
-  const {firstname,lastname,regNo,Subunit,Gender,phoneNo,level,hall,roomNO,webmail,department,matricNo,dob}= req.body
+  const {firstname,lastname,regNo,Subunit,Gender,phoneNo,level,hall,
+    roomNO,webmail,department,matricNo,dob}= req.body
 
+   //to check is the registration Number exist in the database 
   const use = await User.findOne({regNo:regNo,matricNo:matricNo})
   try {
     
     if(!use){
-      
+      //to check if this following things is in the request body
       if(!firstname || !lastname || !regNo || !level ||!hall || ! roomNO || !webmail || !department || !Subunit || !Gender ||!matricNo ||!dob ){
      
        return res.status(400).send('all fields are required')
@@ -55,9 +58,11 @@ router.post('/createUser', async(req,res)=>{
    
 })
 
+//this is the route to the delete a user
 router.delete('/deleteUser/:id',auth, async(req,res)=>{
   try {
     const user = await User.findByIdAndDelete({_id:req.params.id})
+    //to check if the user exist
     if(!user){
         res.status(400).send('This user does exist')
     }
@@ -70,6 +75,7 @@ router.delete('/deleteUser/:id',auth, async(req,res)=>{
     
 })
 
+//This is the route to take attendace
 router.post("/enter", auth,async (req, res) => {
   const monthNames = ["january", "february", "march", "april", "may", "june",
   "july", "august", "september", "october", "november", "december"
@@ -91,6 +97,7 @@ const {regNo,serviceType} = req.body
       };
       const user = await User.findOne({regNo:regNo});
       // console.log(user)
+      // to check if the registrration  Number does not exist
       if(!user){
        return res.send("user not found")
       }
@@ -141,8 +148,10 @@ const {regNo,serviceType} = req.body
     res.status(201).json({msg:'user updated',user})
   })
 
+// this is the route to get all the attendance in  json format
   router.get('/getAttandanceJson',auth,async(req,res)=>{
     try {
+      //the following are required to get the attendance
       let {month,year,date,serviceType} = req.query
       year = Number(year)
       date = Number(date)
@@ -159,8 +168,10 @@ const {regNo,serviceType} = req.body
 
   })
 
+  //to get all the attendance in excel format
   router.get('/getallattendance', auth,async (req,res)=>{
     try {
+      //the following are required to get the attendance
       let {month,year,date,serviceType} = req.query
      year = Number(year)
      date = Number(date)
@@ -171,12 +182,16 @@ const {regNo,serviceType} = req.body
    if(!totalAttendance){
     return res.send(`no attendance:${date},${month},${year}`)
    }
+   // The path function to change json into an excel format
    excel(attendance,date,month,year,serviceType)
+// the path to download the excel file
    const file = path.join(__dirname,`attendance ${serviceType} (${date}-${month}-${year}).xlsx`)
    const fileName = path.basename(file)
    const mimeType = mime.getType(file)
+   // setheader to be able to download attendance
    res.setHeader("Content-Disposition","attachment; filename=" + fileName)
    res.setHeader("Content-Type",mimeType)
+   // the able to download the file
    res.download(file)
    
    
