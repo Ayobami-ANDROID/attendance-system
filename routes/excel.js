@@ -1,5 +1,7 @@
 const xlsx = require('xlsx')
 const path = require('path')
+
+//the function to convert an json into an excel file
 const convertToExcel =(attendance,date,month,year,serviceType)=>{
     const workSheet =xlsx.utils.json_to_sheet(attendance)
     const workBook = xlsx.utils.book_new()

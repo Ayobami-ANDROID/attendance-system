@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 require("dotenv").config()
 
-
+//The route for the admin to login
 router.post('/login',(req,res)=>{
     const {username,password}= req.body
 
