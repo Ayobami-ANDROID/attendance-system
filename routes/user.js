@@ -122,12 +122,13 @@ const {regNo,serviceType} = req.body
            return res.status(200).send('you have successfully signed in today')
            
             
-          } else {
-           if (user.attendance.includes(data)) {
-            return res.status(400).send( "You have signed in today already");
-           } 
+          } else if(user.attendance.includes(data)) {
            
+           return res.status("400").send("you have in today already")
             
+          }
+          else{
+            return res.status("400").send("sign in")
           }
       }else{
           user.attendance.push(data);
