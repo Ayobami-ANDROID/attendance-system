@@ -95,6 +95,10 @@ const {regNo,serviceType} = req.body
         serviceType:serviceType
     
       };
+      let month = monthNames[date.getMonth()]
+      let date = date.getDate()
+      let day = dayNames[date.getDay()]
+      let year = date.getFullYear()
       const user = await User.findOne({regNo:regNo});
       // console.log(user)
       // to check if the registrration  Number does not exist
@@ -119,7 +123,10 @@ const {regNo,serviceType} = req.body
            
             
           } else {
-           return res.status(400).send( "You have signed in today already");
+           if (user.attendance.includes(data)) {
+            return res.status(400).send( "You have signed in today already");
+           } 
+           
             
           }
       }else{
