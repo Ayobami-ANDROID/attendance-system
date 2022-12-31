@@ -97,7 +97,7 @@ const {regNo,serviceType} = req.body
       };
       let month = monthNames[date.getMonth()]
       let dat = date.getDate()
-      let day = dayNames[date.getDay()]
+      let da = dayNames[date.getDay()]
       let year = date.getFullYear()
       const user = await User.findOne({regNo:regNo});
       // console.log(user)
@@ -117,7 +117,9 @@ const {regNo,serviceType} = req.body
           const day = new Date()
           console.log(day, lastCheckInTimestamp);
           if (day.getTime() > lastCheckInTimestamp + 100) {
-            if(user.attendance.includes(data)){
+            if(user.attendance.some(e => e.serviceType === serviceType) && user.attendance.some(e => e.month === month) &&
+            user.attendance.some(e => e.year === year) && user.attendance.some(e => e.day === da) 
+            && user.attendance.some(e => e.date === dat)){
               return res.status(400).send('you have already signed today ') 
             }else{
             user.attendance.push(data);
