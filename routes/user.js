@@ -117,14 +117,13 @@ const {regNo,serviceType} = req.body
           const day = new Date()
           console.log(day, lastCheckInTimestamp);
           if (day.getTime() > lastCheckInTimestamp + 100) {
+            if(user.attendance.includes(data)){
+              return res.status(400).send('you have already signed today ') 
+            }else{
             user.attendance.push(data);
             await user.save();
            return res.status(200).send('you have successfully signed in today')
-           
-            
-          } else if(user.attendance.includes(data)) {
-           
-           return res.status("400").send("you have in today already")
+            }
             
           }
           else{
