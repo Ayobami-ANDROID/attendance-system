@@ -96,7 +96,7 @@ const {regNo,serviceType} = req.body
     
       };
       let month = monthNames[date.getMonth()]
-      let date = date.getDate()
+      let dat = date.getDate()
       let day = dayNames[date.getDay()]
       let year = date.getFullYear()
       const user = await User.findOne({regNo:regNo});
