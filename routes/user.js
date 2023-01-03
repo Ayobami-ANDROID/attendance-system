@@ -164,7 +164,7 @@ const {regNo,serviceType} = req.body
       let {month,year,date,serviceType} = req.query
       year = Number(year)
       date = Number(date)
-      const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year,serviceType:serviceType}}}).select("-attendance -_id -__v")
+      const totalAttendance = await User.find({attendance:{ $elemMatch:{month:month.toLowerCase(),date:date,year:year,serviceType:serviceType}}}).select("attendance -_id -__v")
       if(!totalAttendance){
         return res.send(`no attendance for ${serviceType} (${date},${month},${year})`)
        }
