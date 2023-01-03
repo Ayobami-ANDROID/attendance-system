@@ -119,6 +119,7 @@ const {regNo,serviceType} = req.body
           if (day.getTime() > lastCheckInTimestamp + 100) {
             if(user.attendance.some(e => e.serviceType === serviceType && e.month === month && e.year === year && e.day === da)){
               return res.status(400).send('you have already signed today ') 
+              
             }else{
             user.attendance.push(data);
             await user.save();
