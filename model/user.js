@@ -77,7 +77,7 @@ const userSchema = new mongoose.Schema({
             serviceType :{
                 type:String,
                 enum:['tuesday preservice','thursday preservice',
-                'thursday prayer meeeting', 'saturday meeting','sunday preservice']
+                'thursday prayer meeting', 'saturday meeting','sunday preservice']
             }
 
         }
